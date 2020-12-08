@@ -1,0 +1,54 @@
+- name: load os specific variable file
+  become: yes
+  include_vars: "{{lookup('first_found', params)}}"
+  vars:
+    params:
+      files:
+        - "{{ansible_distribution}}.yml"
+      paths:
+        - "vars"
+- name: install docker prerequisites
+  become: yes
+  apt:
+    name:
+      [
+        "apt-transport-https",
+        "ca-certificates",
+        "software-properties-common",
+        "gnupg-agent",
+        "curl",
+      ]
+    state: "present"
+    update_cache: yes
+- name: install docker repository key
+  become: yes
+  apt_key:
+    url: "{{docker_apt_key}}"
+    state: present
+- name: install docker apt repository
+  become: yes
+  apt_repository:
+    repo: "deb {{docker_apt_repo}} {{ansible_lsb.codename}} stable"
+    state: present
+- name: install docker dependencies
+  become: yes
+  apt:
+    name: [
+      "docker-ce",
+      "docker-ce-cli",
+      "containerd.io"
+    ]
+    state: present
+    update_cache: yes
+- name: add default user to docker group
+  become: yes
+  user:
+    name: "{{ssh_default_user}}"
+    groups: docker
+    append: yes
+- name: install docker-compose
+  become: yes
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+    dest: /usr/local/bin/docker-compose
+    mode: 'u=rwx,g=rx,o=rx'

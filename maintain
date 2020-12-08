@@ -1,0 +1,3 @@
+#!/usr/bin/env python3
+import os
+os.system('ansible-playbook --user app --ask-become-pass playbook-maintain-server.yml')

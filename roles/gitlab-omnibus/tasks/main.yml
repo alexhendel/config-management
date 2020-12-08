@@ -1,0 +1,49 @@
+- name: check if GitLab is already installed  
+  stat: 
+    path: /usr/bin/gitlab-ctl
+  register: gitlab_file
+- name: install lftp for backups
+  become: yes
+  apt:
+    name: lftp
+    state: present
+- name: install prerequisite packages
+  become: yes
+  apt:
+    name:
+      - curl
+      - openssh-server
+      - ca-certificates
+      - tzdata
+      - postfix
+    update_cache: yes
+    state: present
+- name: download repository installation script
+  become: yes
+  get_url:
+    url: https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+    dest: "{{tmp_repository_script}}"
+  when: not gitlab_file.stat.exists
+- name: install repository
+  become: yes
+  command: "bash {{tmp_repository_script}}"
+  register: output
+  when: not gitlab_file.stat.exists
+- name: remove tmp repository script
+  become: yes
+  file:
+    path: "{{tmp_repository_script}}"
+    state: absent
+- name: install gitlab packages
+  become: yes
+  apt:
+    name: gitlab-ce
+    update_cache: yes
+    state: present
+  when: not gitlab_file.stat.exists
+# set gitlab.rb configuration details
+- import_tasks: gitlab_config.yml
+# install custom scripts
+- import_tasks: gitlab_scripts.yml
+# install runner scripts
+- import_tasks: gitlab_runner.yml

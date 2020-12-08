@@ -1,0 +1,2 @@
+- name: maintain docker installation
+  shell: "docker system prune -f"

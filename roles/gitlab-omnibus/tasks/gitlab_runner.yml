@@ -1,0 +1,9 @@
+- name: install gitlab runner package
+  become: yes
+  apt:
+    name: gitlab-runner
+    state: present
+- name: add docker group für runner
+  user:
+    name: gitlab-runner
+    groups: docker

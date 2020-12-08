@@ -1,0 +1,53 @@
+- name: update external url
+  become: yes
+  lineinfile: 
+    path: /etc/gitlab/gitlab.rb
+    regexp: ^external_url
+    line: "external_url '{{external_url}}'"
+  register: gitlab_rb
+- name: enable letsencrypt
+  become: yes
+  lineinfile: 
+    path: /etc/gitlab/gitlab.rb
+    regexp: ^(#.)?letsencrypt\['enable'\].*
+    line: letsencrypt['enable'] = true
+  register: gitlab_rb
+- name: add letsencrypt contact
+  become: yes
+  lineinfile: 
+    path: /etc/gitlab/gitlab.rb
+    regexp: ^(#.)?letsencrypt\['contact_emails'\].*
+    line: letsencrypt['contact_emails'] = ['alexander.hendel@gmail.com']
+  register: gitlab_rb
+- name: enable letsencrypt auto renew
+  become: yes
+  lineinfile: 
+    path: /etc/gitlab/gitlab.rb
+    regexp: ^(#.)?letsencrypt\['auto_renew'\].*
+    line: letsencrypt['auto_renew'] = true
+  register: gitlab_rb
+- name: set letsencrypt auto renew hour
+  become: yes
+  lineinfile: 
+    path: /etc/gitlab/gitlab.rb
+    regexp: ^(#.)?letsencrypt\['auto_renew_hour'\].*
+    line: letsencrypt['auto_renew_hour'] = 0
+  register: gitlab_rb
+- name: set letsencrypt auto renew minute
+  become: yes
+  lineinfile: 
+    path: /etc/gitlab/gitlab.rb
+    regexp: ^(#.)?letsencrypt\['auto_renew_minute'\].*
+    line: letsencrypt['auto_renew_minute'] = 30
+  register: gitlab_rb
+- name: set letsencrypt auto renew day of month
+  become: yes
+  lineinfile: 
+    path: /etc/gitlab/gitlab.rb
+    regexp: ^(#.)?letsencrypt\['auto_renew_day_of_month'\].*
+    line: letsencrypt['auto_renew_day_of_month'] = "*/4"
+  register: gitlab_rb
+- name: reconfigure gitlab if required
+  become: yes
+  command: gitlab-ctl reconfigure
+  when: gitlab_rb.changed

@@ -1,0 +1,13 @@
+- name: check if reboot is required
+  become: yes
+  stat:
+    path: /var/run/reboot-required
+  register: reboot_required
+- name: reboot the machine
+  become: yes
+  ignore_errors: yes
+  reboot:
+    # ansible v2.10 feature
+    # boot_time_command: "who -b"
+    reboot_timeout: 120
+  when: reboot_required.stat.exists

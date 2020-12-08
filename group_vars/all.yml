@@ -1,0 +1,3 @@
+ansible_port: 22
+ssh_default_user: app
+ssh_default_user_pwd: $6$jrF7oaVSaZ7Mow$6Uzw.daMq5Aj95EufuOY21r76Wu.91xk1RgPw1KVJfP6FTyAGBkPE0tfSrAzOOtGN/MSGevfbuhxOpbp6BflG1

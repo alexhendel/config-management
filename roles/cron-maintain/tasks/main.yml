@@ -1,0 +1,10 @@
+- name: add ansible pull cron job for maintenance
+  become: yes
+  cron:
+    name: ansible pull maintain
+    weekday: "*"
+    minute: "30"
+    hour: "1"
+    user: root
+    job: "/usr/bin/ansible-pull --url https://github.com/alexhendel/config-management.git -i 127.0.0.1, --connection local play-maintain-server.yml > /var/log/maintain.log 2>&1"
+    cron_file: ansible_maintain

@@ -1,0 +1,48 @@
+- name: install zsh
+  become: true
+  apt:
+    name: zsh
+    update_cache: true
+- name: check if oh-my-zsh is already configured
+  stat:
+    path: "/home/{{ssh_default_user}}/.oh-my-zsh"
+  register: omz_config
+- name: get oh-my-zsh installer
+  get_url:
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: "{{ omz_installer }}"
+    mode: 0755
+    owner: "{{ssh_default_user}}"
+    group: "{{ssh_default_user}}"
+  when: not omz_config.stat.exists
+- name: ensure oh-my-zsh is not configured
+  become: true
+  file:
+    path: "/home/{{ssh_default_user}}/.oh-my-zsh/"
+    state: absent
+  when: not omz_config.stat.exists
+- name: install oh-my-zsh
+  command: "{{ omz_installer }} --unattended"
+  when: not omz_config.stat.exists
+- name: remove oh-my-zsh installer
+  file:
+    path: "{{ omz_installer }}"
+    state: absent
+  when: not omz_config.stat.exists
+- name: change user shell to zsh
+  become: yes
+  user:
+    name: "{{ssh_default_user}}"
+    shell: /bin/zsh
+- name: install p10k
+  git:
+    repo: "https://github.com/romkatv/powerlevel10k.git"
+    dest: "~/.oh-my-zsh/custom/themes/powerlevel10k"
+    depth: 1
+  when: not omz_config.stat.exists
+- name: set p10k theme
+  lineinfile:
+    path: ~/.zshrc
+    regexp: "^ZSH_THEME="
+    line: 'ZSH_THEME="powerlevel10k/powerlevel10k"'
+  when: not omz_config.stat.exists

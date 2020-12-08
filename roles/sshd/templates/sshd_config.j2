@@ -1,0 +1,25 @@
+# no root login via ssh
+PermitRootLogin no
+
+# limit auth tries and sessions for improved security
+MaxAuthTries 3
+MaxSessions 2
+
+# force key based login
+PubkeyAuthentication yes
+
+# disable clear text pwd login
+PasswordAuthentication no
+PermitEmptyPasswords no
+
+# other general settings
+ChallengeResponseAuthentication no
+UsePAM yes
+X11Forwarding yes
+PrintMotd no
+
+# allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+# override default of no subsystems
+Subsystem       sftp    /usr/lib/openssh/sftp-server

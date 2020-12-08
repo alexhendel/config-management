@@ -1,0 +1,7 @@
+- name: apt update / upgrade / autoclean / autoremove
+  become: yes
+  apt:
+    update_cache: yes
+    upgrade: dist
+    autoclean: yes
+    autoremove: yes

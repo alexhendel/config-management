@@ -1,0 +1,33 @@
+- name: make scripts dir
+  become: yes
+  file:
+    path: "{{scripts_dir}}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+- name: deploy register-runner script
+  become: yes
+  template:
+    src: register-runner.py.j2
+    dest: "{{scripts_dir}}/register-runner.py"
+    owner: root
+    group: root
+    mode: "0750"
+- name: copy gitlab backup script
+  become: yes
+  copy:
+    src: backup.py
+    dest: "{{scripts_dir}}/backup.py"
+    owner: root
+    group: root
+    mode: "0700"
+- name: copy gitlab backup config
+  become: yes
+  copy:
+    src: backup.yml
+    dest: "{{scripts_dir}}/backup.yml"
+    owner: root
+    group: root
+    mode: "0640"
+- import_tasks: gitlab_cron.yml

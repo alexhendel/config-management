@@ -1,0 +1,21 @@
+---
+- hosts: all
+  gather_facts: true
+  roles:
+    # system update & upgrade
+    - full-upgrade
+    # admin tools
+    - git
+    - htop
+    - rsync
+    - ansible
+    # ssh setup
+    - sshd
+    - ssh-user
+    - zsh
+    # docker
+    - docker-host
+    # maintain
+    - cron-maintain
+    # reboot
+    - restart-if-required

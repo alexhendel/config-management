@@ -1,0 +1,21 @@
+- name: add default user
+  become: yes
+  user:
+    name: "{{ssh_default_user}}"
+    password: "{{ssh_default_user_pwd}}"
+    groups: sudo
+    shell: /bin/bash
+- name: add alex's public keys
+  authorized_key:
+    user: "{{ssh_default_user}}"
+    state: present
+    key: "{{item}}"
+  with_file:
+    - files/alex.pub
+- name: create config dir
+  file:
+    path: ~/.config
+    state: directory
+    owner: "{{ssh_default_user}}"
+    group: "{{ssh_default_user}}"
+    mode: 0750

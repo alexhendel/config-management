@@ -1,0 +1,25 @@
+- name: update sshd_config
+  become: yes
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: '0644'
+  register: sshd_restart_required
+- name: restart sshd after config change
+  become: yes
+  service:
+    name: ssh
+    state: restarted
+  when: sshd_restart_required.changed
+- name: install sshpass
+  become: yes
+  apt:
+    name: sshpass
+    state: present
+- name: install sshguard
+  become: yes
+  apt:
+    name: sshguard
+    state: present

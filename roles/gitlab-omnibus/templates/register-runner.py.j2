@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+import os
+import argparse
+import logging
+
+logging.basicConfig(format='[%(asctime)s] [%(levelname)-8s] %(message)s',
+                    level=logging.INFO,
+                    datefmt='%Y-%m-%d %H:%M:%S')
+
+def parse_token_from_arguments():
+  parser = argparse.ArgumentParser(description='Process some integers.')
+  parser.add_argument('registration_token', metavar='token', type=str, help='the gitlab runner registration token')
+  args = parser.parse_args()
+  logging.info('Registering Gitlab Runner with registration token "{0}"'.format(args.registration_token))
+  return args.registration_token
+
+def main():
+  token = parse_token_from_arguments()
+  os.system('gitlab-runner register '
+            '--non-interactive '
+            '--registration-token {0} '
+            '--executor shell '
+            '--description "shell-runner" '
+            '--run-untagged="true" '
+            '--url {{external_url}}'.format(token))
+main()

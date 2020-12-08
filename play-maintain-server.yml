@@ -1,0 +1,10 @@
+---
+- hosts: all
+  gather_facts: true
+  roles:
+  # system update & upgrade
+  - full-upgrade
+  # docker maintenence
+  - docker-maintain
+  # reboot
+  - restart-if-required
