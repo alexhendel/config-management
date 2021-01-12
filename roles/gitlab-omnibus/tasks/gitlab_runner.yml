@@ -3,7 +3,8 @@
   apt:
     name: gitlab-runner
     state: present
-- name: add docker group für runner
+- name: add docker group for runner
+  become: yes
   user:
     name: gitlab-runner
     groups: docker
