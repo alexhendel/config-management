@@ -1,0 +1,13 @@
+ssl_email: alexander.hendel@gmail.com
+domains:
+  - { name: "alex-hendel.de", proxy: 3400 }
+  - { name: "www.alex-hendel.de", proxy: 3400 }
+  - { name: "ees-elektro.de", proxy: 3300 }
+  - { name: "www.ees-elektro.de", proxy: 3300 }
+  # port: 3200 im original - aktuell umgeleitet
+  - { name: "ees-consulting.de", proxy: 3300 }
+  - { name: "www.ees-consulting.de", proxy: 3300 }
+  - { name: "gbv-zwickau.de", proxy: 3100 }
+  - { name: "www.gbv-zwickau.de", proxy: 3100 }
+  - { name: "schmerztherapie-zwickau-janmehner.de", proxy: 3000 }
+  - { name: "www.schmerztherapie-zwickau-janmehner.de", proxy: 3000 }

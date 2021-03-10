@@ -2,8 +2,8 @@
 - name: include basic server setup play
   import_playbook: play-bootstrap-server.yml
 
-- hosts: gitlab
+- hosts: websites
   gather_facts: true
   roles:
-  # install gitlab
-  - gitlab-omnibus
+  # configure website host
+  - website-host

@@ -1,0 +1,68 @@
+- name: install nginx
+  become: yes
+  apt:
+    name: nginx
+    state: present
+- name: copy nginx http configs
+  become: yes
+  template:
+    src: nginx.j2
+    dest: '/etc/nginx/sites-available/80_nginx.conf'
+    owner: root
+    group: root
+    mode: '0644'
+- name: activate nginx http config
+  become: yes
+  file:
+    src: /etc/nginx/sites-available/80_nginx.conf
+    dest: /etc/nginx/sites-enabled/80_nginx
+    owner: root
+    group: root
+    state: link
+  # disable https conf temporarily to enable certificate requests without nginx complaining on missing cert files
+- name: check if nginx https conf exists
+  become: yes
+  stat:
+    path: /etc/nginx/sites-enabled/443_nginx
+  register: https_conf
+- name: disable nginx https config temporarily
+  become: yes
+  file:
+    path: /etc/nginx/sites-enabled/443_nginx
+    state: absent
+  when: https_conf.stat.exists
+  # restart the proxy
+- name: restart nginx
+  become: yes
+  service:
+    name: nginx
+    state: restarted
+  # request certificates if needed
+- include_tasks: nginx_alex-hendel.de.yml
+- include_tasks: nginx_ees-elektro.de.yml
+- include_tasks: nginx_ees-consulting.de.yml
+- include_tasks: nginx_gbv-zwickau.de.yml
+- include_tasks: nginx_schmerztherapie-zwickau-janmehner.de.yml
+  # enable https config
+- name: copy nginx https configs
+  become: yes
+  template:
+    src: nginx_443.j2
+    dest: '/etc/nginx/sites-available/443_nginx.conf'
+    owner: root
+    group: root
+    mode: '0644'
+- name: activate nginx http config
+  become: yes
+  file:
+    src: /etc/nginx/sites-available/443_nginx.conf
+    dest: /etc/nginx/sites-enabled/443_nginx
+    owner: root
+    group: root
+    state: link
+  # restart the proxy
+- name: restart nginx
+  become: yes
+  service:
+    name: nginx
+    state: restarted

@@ -1,0 +1,20 @@
+# main
+- name: check if certificate exists - gbv-zwickau.de
+  become: yes
+  stat:
+    path: '/etc/letsencrypt/live/gbv-zwickau.de/fullchain.pem'
+  register: primary_domain_cert
+- name: request certificate if it doesn't exist
+  become: yes
+  shell: 'certbot certonly --noninteractive --agree-tos --cert-name gbv-zwickau.de -d gbv-zwickau.de -m {{ssl_email}} --webroot -w /var/www/certbot/html'
+  when: not primary_domain_cert.stat.exists
+# www
+- name: check if certificate exists - www.gbv-zwickau.de
+  become: yes
+  stat:
+    path: '/etc/letsencrypt/live/www.gbv-zwickau.de/fullchain.pem'
+  register: www_domain_cert
+- name: request certificate if it doesn't exist
+  become: yes
+  shell: 'certbot certonly --noninteractive --agree-tos --cert-name www.gbv-zwickau.de -d www.gbv-zwickau.de -m {{ssl_email}} --webroot -w /var/www/certbot/html'
+  when: not www_domain_cert.stat.exists

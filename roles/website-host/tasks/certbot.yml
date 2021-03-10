@@ -1,0 +1,18 @@
+- name: install certbot
+  become: yes
+  copy:
+    src: certbot.sh
+    dest: /usr/bin/certbot
+    owner: root
+    group: root
+    mode: '0755'
+- name: add cron job for certificate renewal
+  become: yes
+  cron:
+    name: certbot renew
+    weekday: "*"
+    minute: "30"
+    hour: "2"
+    user: root
+    job: "/usr/bin/certbot renew | tee /var/log/certbot_renew.log"
+    cron_file: ansible_certbot
