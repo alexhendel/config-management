@@ -18,3 +18,13 @@
   become: yes
   shell: 'certbot certonly --noninteractive --agree-tos --cert-name www.gbv-zwickau.de -d www.gbv-zwickau.de -m {{ssl_email}} --webroot -w /var/www/certbot/html'
   when: not www_domain_cert.stat.exists
+# cms
+- name: check if certificate exists - cms.gbv-zwickau.de
+  become: yes
+  stat:
+    path: '/etc/letsencrypt/live/cms.gbv-zwickau.de/fullchain.pem'
+  register: cms_domain_cert
+- name: request certificate if it doesn't exist
+  become: yes
+  shell: 'certbot certonly --noninteractive --agree-tos --cert-name cms.gbv-zwickau.de -d cms.gbv-zwickau.de -m {{ssl_email}} --webroot -w /var/www/certbot/html'
+  when: not cms_domain_cert.stat.exists

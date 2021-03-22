@@ -9,5 +9,6 @@ domains:
   - { name: "www.ees-consulting.de", proxy: 3300 }
   - { name: "gbv-zwickau.de", proxy: 3100 }
   - { name: "www.gbv-zwickau.de", proxy: 3100 }
+  - { name: "cms.gbv-zwickau.de", proxy: 3101 }
   - { name: "schmerztherapie-zwickau-janmehner.de", proxy: 3000 }
   - { name: "www.schmerztherapie-zwickau-janmehner.de", proxy: 3000 }
