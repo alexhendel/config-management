@@ -1,5 +1,7 @@
 ssl_email: alexander.hendel@gmail.com
 domains:
+  - { name: "kerstin-hendel.de", proxy: 3500 }
+  - { name: "www.kerstin-hendel.de", proxy: 3500 }
   - { name: "alex-hendel.de", proxy: 3400 }
   - { name: "www.alex-hendel.de", proxy: 3400 }
   - { name: "ees-elektro.de", proxy: 3300 }

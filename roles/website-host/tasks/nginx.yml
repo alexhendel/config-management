@@ -42,6 +42,7 @@
 - include_tasks: nginx_ees-elektro.de.yml
 - include_tasks: nginx_ees-consulting.de.yml
 - include_tasks: nginx_gbv-zwickau.de.yml
+- include_tasks: nginx_kerstin-hendel.de.yml
 - include_tasks: nginx_schmerztherapie-zwickau-janmehner.de.yml
   # enable https config
 - name: copy nginx https configs

@@ -1,0 +1,20 @@
+# main
+- name: check if certificate exists - kerstin-hendel.de
+  become: yes
+  stat:
+    path: '/etc/letsencrypt/live/kerstin-hendel.de/fullchain.pem'
+  register: primary_domain_cert
+- name: request certificate if it doesn't exist
+  become: yes
+  shell: 'certbot certonly --noninteractive --agree-tos --cert-name kerstin-hendel.de -d kerstin-hendel.de -m {{ssl_email}} --webroot -w /var/www/certbot/html'
+  when: not primary_domain_cert.stat.exists
+# www
+- name: check if certificate exists - www.kerstin-hendel.de
+  become: yes
+  stat:
+    path: '/etc/letsencrypt/live/www.kerstin-hendel.de/fullchain.pem'
+  register: www_domain_cert
+- name: request certificate if it doesn't exist
+  become: yes
+  shell: 'certbot certonly --noninteractive --agree-tos --cert-name www.kerstin-hendel.de -d www.kerstin-hendel.de -m {{ssl_email}} --webroot -w /var/www/certbot/html'
+  when: not www_domain_cert.stat.exists
