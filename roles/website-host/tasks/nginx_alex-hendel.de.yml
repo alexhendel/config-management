@@ -18,3 +18,13 @@
   become: yes
   shell: 'certbot certonly --noninteractive --agree-tos --cert-name www.alex-hendel.de -d www.alex-hendel.de -m {{ssl_email}} --webroot -w /var/www/certbot/html'
   when: not www_domain_cert.stat.exists
+# cms
+- name: check if certificate exists - cms.alex-hendel.de
+  become: yes
+  stat:
+    path: '/etc/letsencrypt/live/cms.alex-hendel.de/fullchain.pem'
+  register: cms_domain_cert
+- name: request certificate if it doesn't exist
+  become: yes
+  shell: 'certbot certonly --noninteractive --agree-tos --cert-name cms.alex-hendel.de -d cms.alex-hendel.de -m {{ssl_email}} --webroot -w /var/www/certbot/html'
+  when: not cms_domain_cert.stat.exists

@@ -4,6 +4,7 @@ domains:
   - { name: "www.kerstin-hendel.de", proxy: 3500 }
   - { name: "alex-hendel.de", proxy: 3400 }
   - { name: "www.alex-hendel.de", proxy: 3400 }
+  - { name: "cms.alex-hendel.de", proxy: 3401 }
   - { name: "ees-elektro.de", proxy: 3300 }
   - { name: "www.ees-elektro.de", proxy: 3300 }
   # port: 3200 im original - aktuell umgeleitet
