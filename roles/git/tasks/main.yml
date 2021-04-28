@@ -1,5 +1,7 @@
 - name: install git
   become: yes
   apt:
-    name: git
+    name: 
+     - git
+     - git-lfs
     state: present
