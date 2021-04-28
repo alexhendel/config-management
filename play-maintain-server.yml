@@ -6,5 +6,7 @@
   - full-upgrade
   # docker maintenence
   - docker-maintain
+  # gitlab maintain
+  - gitlab-maintain
   # reboot
   - restart-if-required
