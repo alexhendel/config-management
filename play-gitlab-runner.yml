@@ -1,0 +1,11 @@
+---
+- name: include basic server setup play
+  import_playbook: play-bootstrap-server.yml
+
+- hosts: runner
+  gather_facts: true
+  roles:
+  # install gitlab runner
+  - gitlab-omnibus-runner
+  # maintain runner
+  - gitlab-maintain

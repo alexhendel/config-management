@@ -1,0 +1,34 @@
+- name: install gitlab runner package
+  become: yes
+  apt:
+    name: gitlab-runner
+    state: present
+- name: add docker group for runner
+  become: yes
+  user:
+    name: gitlab-runner
+    groups: docker
+- name: make scripts dir
+  become: yes
+  file:
+    path: "{{scripts_dir}}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0750"
+- name: make runner var dir
+  become: yes
+  file:
+    path: /var/lib/gitlab-runner
+    state: directory
+    owner: gitlab-runner
+    group: gitlab-runner
+    mode: "0750"
+- name: deploy register-runner script
+  become: yes
+  template:
+    src: ../gitlab-omnibus/templates/register-runner.py.j2
+    dest: "{{scripts_dir}}/register-runner.py"
+    owner: root
+    group: root
+    mode: "0750"

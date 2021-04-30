@@ -3,6 +3,14 @@
   apt:
     name: gitlab-runner
     state: present
+- name: make runner var dir
+  become: yes
+  file:
+    path: /var/lib/gitlab-runner
+    state: directory
+    owner: gitlab-runner
+    group: gitlab-runner
+    mode: "0750"
 - name: add docker group for runner
   become: yes
   user:
