@@ -5,6 +5,8 @@
 - hosts: runner
   gather_facts: true
   roles:
+  # install packages
+  - git
   # install gitlab runner
   - gitlab-omnibus-runner
   # maintain runner
